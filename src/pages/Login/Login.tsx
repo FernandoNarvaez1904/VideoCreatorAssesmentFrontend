@@ -14,7 +14,7 @@ export function Login() {
 
         <TextInput label="Username" placeholder="some_username" size="md" required/>
         <PasswordInput label="Password" placeholder="Your password" mt="md" size="md" required/>
-        <Button fullWidth mt="xl" size="md">
+        <Button fullWidth mt="xl" size="md" component={Link} to={"/videos"}>
           Login
         </Button>
 

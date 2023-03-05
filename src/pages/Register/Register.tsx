@@ -45,7 +45,7 @@ export function Register() {
           <PasswordInput label="Password" placeholder="Your password" mt="md" size="md"
                          required {...form.getInputProps('password')}/>
 
-          <Button fullWidth mt="xl" size="md" type={"submit"}>
+          <Button fullWidth mt="xl" size="md" type={"submit"} component={Link} to={"/login"}>
             Register
           </Button>
         </form>
