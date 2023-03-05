@@ -2,6 +2,7 @@ import React from 'react';
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import Videos from "./pages/Videos";
 
 function App() {
   const routes = createBrowserRouter([
@@ -12,6 +13,10 @@ function App() {
     {
       path: '/register',
       element: <Register/>,
+    },
+    {
+      path: '/videos',
+      element: <Videos/>,
     }
   ]);
   return <RouterProvider router={routes}/>;
