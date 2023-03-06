@@ -62,7 +62,7 @@ export function Login() {
       localStorage.setItem("access_token", mutation.data.token);
       navigate("/videos");
     }
-  }, [mutation.data]);
+  }, [mutation.data, navigate]);
 
   useLayoutEffect(() => {
     // If the token exists in localStorage, navigate to the videos page
