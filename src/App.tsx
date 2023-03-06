@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Videos from "./pages/Videos";
 import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "react-query";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +21,11 @@ function App() {
     },
     {
       path: "/videos",
-      element: <Videos />,
+      element: (
+        <ProtectedRoute>
+          <Videos />
+        </ProtectedRoute>
+      ),
     },
   ]);
   return <RouterProvider router={routes} />;
