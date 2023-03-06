@@ -42,9 +42,6 @@ export function Navbar() {
           </Group>
           {/* Mobile Navbar */}
           <Group className={classes.hiddenMobile}>
-            <Link to={"/videos"} className={classes.link}>
-              All Videos
-            </Link>
             <Button onClick={logOut}>Log Out</Button>
           </Group>
           <Burger
