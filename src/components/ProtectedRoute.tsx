@@ -1,14 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import { useLayoutEffect } from "react";
+import { useLocalStorage } from "@mantine/hooks";
+import { useEffect } from "react";
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const navigate = useNavigate();
+  const [token] = useLocalStorage({
+    key: "access_token",
+    defaultValue: null,
+  });
 
-  useLayoutEffect(() => {
-    if (localStorage.getItem("access_token") === null) {
+  useEffect(() => {
+    if (!token) {
       navigate("/login");
     }
-  });
+  }, [token, navigate]);
 
   return <>{children}</>;
 }
