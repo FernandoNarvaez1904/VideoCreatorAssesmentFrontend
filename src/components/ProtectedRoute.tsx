@@ -6,11 +6,11 @@ function ProtectedRoute({ children }: { children: JSX.Element }) {
   const navigate = useNavigate();
   const [token] = useLocalStorage({
     key: "access_token",
-    defaultValue: null,
+    defaultValue: "",
   });
 
   useEffect(() => {
-    if (!token) {
+    if (token === null) {
       navigate("/login");
     }
   }, [token, navigate]);

@@ -15,7 +15,8 @@ import { useMutation } from "react-query";
 import axiosInstance from "../../axiosInstance";
 import { AxiosError } from "axios";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
+import { useLocalStorage } from "@mantine/hooks";
 
 interface ILoginMutationData {
   token: string;
@@ -40,6 +41,11 @@ export function Login() {
     },
   });
 
+  const [authToken] = useLocalStorage({
+    key: "access_token",
+    defaultValue: "",
+  });
+
   const mutation = useMutation<
     ILoginMutationData,
     AxiosError<ILoginMutationErrorData>,
@@ -60,16 +66,15 @@ export function Login() {
     if (mutation.data) {
       // If successful, set the token to localStorage and navigate to the videos page
       localStorage.setItem("access_token", mutation.data.token);
-      navigate("/videos");
     }
   }, [mutation.data, navigate]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // If the token exists in localStorage, navigate to the videos page
-    if (localStorage.getItem("access_token")) {
+    if (authToken) {
       navigate("/videos");
     }
-  });
+  }, [authToken, navigate]);
 
   const { classes } = useLoginStyles();
   return (
