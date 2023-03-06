@@ -8,8 +8,9 @@ import {
   Title,
 } from "@mantine/core";
 import { useLoginStyles } from "./Register.styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
+import { useLayoutEffect } from "react";
 
 interface RegisterForm {
   username?: string;
@@ -21,6 +22,7 @@ interface RegisterForm {
 
 export function Register() {
   const { classes } = useLoginStyles();
+  const navigate = useNavigate();
 
   const form = useForm<RegisterForm>({
     initialValues: {
@@ -30,6 +32,13 @@ export function Register() {
       lastName: "",
       password: "",
     },
+  });
+
+  useLayoutEffect(() => {
+    // If the token exists in localStorage, navigate to the videos page
+    if (localStorage.getItem("access_token")) {
+      navigate("/videos");
+    }
   });
 
   return (
