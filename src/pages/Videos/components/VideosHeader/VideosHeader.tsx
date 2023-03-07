@@ -70,8 +70,6 @@ function VideosHeader() {
         onClose={close}
         title={<Text weight={700}>Create Video</Text>}
       >
-        {videos.map((el) => el.title)}
-
         {/* Show an error message if the API call fails */}
         {createVideoMutation.isError ? (
           <Alert
@@ -93,7 +91,6 @@ function VideosHeader() {
             placeholder="My Amazing Video"
             required
             {...videoForm.getInputProps("title")}
-            mt={"md"}
           />
           <TextInput
             label="Video URL"
