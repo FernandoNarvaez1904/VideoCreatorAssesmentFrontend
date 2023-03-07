@@ -1,4 +1,5 @@
 import {
+  Alert,
   Anchor,
   Button,
   Paper,
@@ -7,22 +8,39 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useLoginStyles } from "./Register.styles";
-import { Link } from "react-router-dom";
+import { useRegisterStyles } from "./Register.styles";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
+import { useMutation } from "react-query";
+import axiosInstance from "../../axiosInstance";
+import User from "../../types/api/user.interface";
+import { AxiosError } from "axios";
+import { useEffect } from "react";
+import { notifications } from "@mantine/notifications";
+import { IconAlertCircle } from "@tabler/icons-react";
 
-interface RegisterForm {
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  password?: string;
-  email?: string;
+interface IRegisterForm {
+  username: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  email: string;
 }
 
 export function Register() {
-  const { classes } = useLoginStyles();
+  const { classes } = useRegisterStyles();
+  const navigate = useNavigate();
 
-  const form = useForm<RegisterForm>({
+  const signUpUserMutation = useMutation<
+    User,
+    AxiosError<{ message: string }>,
+    IRegisterForm
+  >(async (newUser) => {
+    const data = await axiosInstance.post<User>("user/signup", newUser);
+    return data.data;
+  }); // Use the useMutation hook to handle the login API call and manage the async data
+
+  const registerForm = useForm<IRegisterForm>({
     initialValues: {
       username: "",
       email: "",
@@ -32,6 +50,23 @@ export function Register() {
     },
   });
 
+  const onSubmit = registerForm.onSubmit(async (values) => {
+    await signUpUserMutation.mutateAsync(values);
+  });
+
+  useEffect(() => {
+    if (signUpUserMutation.data) {
+      // Show notification to remind of username just created
+      notifications.show({
+        title: `User ${signUpUserMutation.data.username} was created`,
+        message: `${signUpUserMutation.data.firstName} ${signUpUserMutation.data.lastName} - ${signUpUserMutation.data.email}`,
+        color: "teal",
+      });
+      // go to login
+      navigate("/login");
+    }
+  }, [signUpUserMutation.data, navigate]);
+
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={30}>
@@ -39,14 +74,29 @@ export function Register() {
           Register To Creator Platform!
         </Title>
 
-        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+        {/* Show an error message if the API call fails */}
+        {signUpUserMutation.isError ? (
+          <Alert
+            icon={<IconAlertCircle size="1rem" />}
+            title="Bummer!"
+            color="red"
+            mb={"xs"}
+          >
+            <div>
+              An error occurred:{" "}
+              {signUpUserMutation.error?.response?.data.message}
+            </div>
+          </Alert>
+        ) : null}
+
+        <form onSubmit={onSubmit}>
           <TextInput
             label="Username"
             placeholder="someUsername"
             mt="md"
             size="md"
             required
-            {...form.getInputProps("username")}
+            {...registerForm.getInputProps("username")}
           />
           <TextInput
             label="Email"
@@ -55,7 +105,7 @@ export function Register() {
             mt="md"
             size="md"
             required
-            {...form.getInputProps("email")}
+            {...registerForm.getInputProps("email")}
           />
           <TextInput
             label="First Name"
@@ -63,7 +113,7 @@ export function Register() {
             mt="md"
             size="md"
             required
-            {...form.getInputProps("firstName")}
+            {...registerForm.getInputProps("firstName")}
           />
           <TextInput
             label="Last Name"
@@ -71,7 +121,7 @@ export function Register() {
             mt="md"
             size="md"
             required
-            {...form.getInputProps("lastName")}
+            {...registerForm.getInputProps("lastName")}
           />
           <PasswordInput
             label="Password"
@@ -79,17 +129,10 @@ export function Register() {
             mt="md"
             size="md"
             required
-            {...form.getInputProps("password")}
+            {...registerForm.getInputProps("password")}
           />
 
-          <Button
-            fullWidth
-            mt="xl"
-            size="md"
-            type={"submit"}
-            component={Link}
-            to={"/login"}
-          >
+          <Button fullWidth mt="xl" size="md" type={"submit"}>
             Register
           </Button>
         </form>

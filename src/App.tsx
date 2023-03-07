@@ -10,6 +10,7 @@ import Videos from "./pages/Videos";
 import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "react-query";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { Notifications } from "@mantine/notifications";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ function WrappedApp() {
   return (
     <MantineProvider withNormalizeCSS withGlobalStyles>
       <QueryClientProvider client={queryClient}>
+        <Notifications position={"top-right"} />
         <App />
       </QueryClientProvider>
     </MantineProvider>

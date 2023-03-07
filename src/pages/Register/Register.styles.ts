@@ -1,6 +1,6 @@
 import { createStyles, rem } from "@mantine/core";
 
-export const useLoginStyles = createStyles((theme) => ({
+export const useRegisterStyles = createStyles((theme) => ({
   wrapper: {
     height: "100%",
     backgroundImage:
