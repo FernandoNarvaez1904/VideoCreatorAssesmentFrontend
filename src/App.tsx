@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Notifications } from "@mantine/notifications";
 import { RecoilRoot } from "recoil";
+import MainLayout from "./layout/MainLayout";
 
 const queryClient = new QueryClient();
 
@@ -30,12 +31,18 @@ function App() {
       element: <Register />,
     },
     {
-      path: "/videos",
+      path: "/",
       element: (
         <ProtectedRoute>
-          <Videos />
+          <MainLayout />
         </ProtectedRoute>
       ),
+      children: [
+        {
+          path: "/videos",
+          element: <Videos />,
+        },
+      ],
     },
   ]);
   return <RouterProvider router={routes} />;
