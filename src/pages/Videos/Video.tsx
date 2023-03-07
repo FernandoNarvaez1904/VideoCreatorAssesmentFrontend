@@ -1,15 +1,16 @@
 import { Stack } from "@mantine/core";
 import VideosHeader from "./components/VideosHeader";
+import { Suspense } from "react";
 import VideosGrid from "./components/VideosGrid";
-import Navbar from "../../layout/components/Navbar";
 
 function Videos() {
   return (
     <>
-      <Navbar />
-      <Stack mx={"15%"} my={25} spacing={"lg"} h={"90%"}>
+      <Stack spacing={"lg"} h={"100%"}>
         <VideosHeader />
-        <VideosGrid />
+        <Suspense fallback={<p>Loading...</p>}>
+          <VideosGrid />
+        </Suspense>
       </Stack>
     </>
   );

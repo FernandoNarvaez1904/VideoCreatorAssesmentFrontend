@@ -10,13 +10,19 @@ import { videosAtom } from "../../recoil/atoms";
 function VideosGrid() {
   const [videos, setVideos] = useRecoilState(videosAtom);
 
-  useQuery<Video[]>("publishedVideos", async () => {
-    const res: AxiosResponse<Video[]> = await axiosInstance(
-      "/videos/published"
-    );
-    setVideos(res.data);
-    return res.data;
-  });
+  useQuery<Video[]>(
+    "publishedVideos",
+    async () => {
+      const res: AxiosResponse<Video[]> = await axiosInstance(
+        "/videos/published"
+      );
+      setVideos(res.data);
+      return res.data;
+    },
+    {
+      suspense: true,
+    }
+  );
 
   return (
     <>
