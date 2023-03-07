@@ -10,10 +10,10 @@ function ProtectedRoute({ children }: { children: JSX.Element }) {
   });
 
   useEffect(() => {
-    if (token === null) {
+    if (!token) {
       navigate("/login");
     }
-  }, [token, navigate]);
+  });
 
   return <>{children}</>;
 }
