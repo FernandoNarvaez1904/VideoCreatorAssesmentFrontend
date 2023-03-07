@@ -11,6 +11,7 @@ import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "react-query";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Notifications } from "@mantine/notifications";
+import { RecoilRoot } from "recoil";
 
 const queryClient = new QueryClient();
 
@@ -45,7 +46,9 @@ function WrappedApp() {
     <MantineProvider withNormalizeCSS withGlobalStyles>
       <QueryClientProvider client={queryClient}>
         <Notifications position={"top-right"} />
-        <App />
+        <RecoilRoot>
+          <App />
+        </RecoilRoot>
       </QueryClientProvider>
     </MantineProvider>
   );

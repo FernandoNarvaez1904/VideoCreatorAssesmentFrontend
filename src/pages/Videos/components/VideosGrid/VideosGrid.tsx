@@ -4,13 +4,17 @@ import { AxiosResponse } from "axios";
 import Video from "../../../../types/api/video.interface";
 import axiosInstance from "../../../../axiosInstance";
 import VideoCard from "../VideoCard";
+import { useRecoilState } from "recoil";
+import { videosAtom } from "../../recoil/atoms";
 
 function VideosGrid() {
-  const info = useQuery<Video[]>("publishedVideos", async () => {
+  const [videos, setVideos] = useRecoilState(videosAtom);
+
+  useQuery<Video[]>("publishedVideos", async () => {
     const res: AxiosResponse<Video[]> = await axiosInstance(
       "/videos/published"
     );
-
+    setVideos(res.data);
     return res.data;
   });
 
@@ -25,7 +29,7 @@ function VideosGrid() {
             { maxWidth: "xs", cols: 1, spacing: "sm" },
           ]}
         >
-          {info.data?.map((el) => (
+          {videos.map((el) => (
             <VideoCard
               key={el.id}
               title={el.title}
