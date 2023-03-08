@@ -8,22 +8,30 @@ import {
   Text,
 } from "@mantine/core";
 import { useVideoCardStyles } from "./VideoCard.styles";
+import { Link } from "react-router-dom";
 
 interface VideoCardProps {
   title: string;
   creationDate: string;
   thumbnailUrl?: string;
   profilePictureUrl?: string;
+  videoId: number;
 }
 
-function VideoCard(el: VideoCardProps) {
+function VideoCard({
+  videoId,
+  profilePictureUrl,
+  thumbnailUrl,
+  title,
+  creationDate,
+}: VideoCardProps) {
   const { classes } = useVideoCardStyles();
 
   return (
-    <Card radius="md" component="a" href="#" px={0}>
+    <Card radius="md" component={Link} to={`/videoDetail/${videoId}`} px={0}>
       <Card.Section>
         <AspectRatio ratio={1920 / 1080}>
-          <Image src={el.thumbnailUrl} withPlaceholder radius={"md"} />
+          <Image src={thumbnailUrl} withPlaceholder radius={"md"} />
         </AspectRatio>
       </Card.Section>
 
@@ -31,16 +39,16 @@ function VideoCard(el: VideoCardProps) {
         <Avatar
           radius={"xl"}
           color={"blue"}
-          src={el.profilePictureUrl}
+          src={profilePictureUrl}
           size={"md"}
         />
         <Box>
           <Text className={classes.title}>
-            {el.title}
+            {title}
             <br />
           </Text>
           <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
-            {el.creationDate}
+            {creationDate}
           </Text>
         </Box>
       </Group>
