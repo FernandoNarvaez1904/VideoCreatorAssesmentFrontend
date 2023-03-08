@@ -18,7 +18,6 @@ import { AxiosError } from "axios";
 import axiosInstance from "../../../../axiosInstance";
 import Video from "../../../../types/api/video.interface";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { videosAtom } from "../../recoil/atoms";
 
@@ -40,6 +39,11 @@ function VideosHeader() {
     IVideoCreateForm
   >(async (newVideo) => {
     const data = await axiosInstance.post<Video>("videos/create", newVideo);
+    if (data.data.isPublished) {
+      setVideos((prev) => [data.data, ...prev]);
+    }
+    close();
+    videoForm.reset();
     return data.data;
   }); // Use the useMutation hook to handle the login API call and manage the async data
 
@@ -63,16 +67,6 @@ function VideosHeader() {
   const onSubmitCreateVideoForm = videoForm.onSubmit(async (values) => {
     await createVideoMutation.mutateAsync(values); // Call the API with form data
   });
-
-  useEffect(() => {
-    if (createVideoMutation.data) {
-      if (createVideoMutation.data.isPublished) {
-        setVideos((prev) => [createVideoMutation.data, ...prev]);
-      }
-      close();
-      videoForm.reset();
-    }
-  }, [createVideoMutation.data, setVideos, close, videoForm]);
 
   return (
     <>
