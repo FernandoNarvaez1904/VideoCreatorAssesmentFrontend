@@ -66,9 +66,13 @@ function VideosHeader() {
 
   useEffect(() => {
     if (createVideoMutation.data) {
-      setVideos((prev) => [createVideoMutation.data, ...prev]);
+      if (createVideoMutation.data.isPublished) {
+        setVideos((prev) => [createVideoMutation.data, ...prev]);
+      }
+      close();
+      videoForm.reset();
     }
-  }, [createVideoMutation.data, setVideos, close]);
+  }, [createVideoMutation.data, setVideos, close, videoForm]);
 
   return (
     <>
