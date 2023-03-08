@@ -12,6 +12,7 @@ interface Video {
   isPublished: boolean;
 
   user: User;
+  likedBy?: User[];
 }
 
 export default Video;

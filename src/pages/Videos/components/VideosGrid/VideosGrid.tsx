@@ -38,6 +38,7 @@ function VideosGrid() {
           {videos.map((el) => (
             <VideoCard
               key={el.id}
+              videoId={el.id}
               title={el.title}
               creationDate={el.creationDate}
               profilePictureUrl={el.user.profilePictureUrl}

@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Notifications } from "@mantine/notifications";
 import { RecoilRoot } from "recoil";
+import VideoDetail from "./pages/VideoDetail";
 import MainLayout from "./layout/MainLayout";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,10 @@ function App() {
         {
           path: "/videos",
           element: <Videos />,
+        },
+        {
+          path: "/videoDetail/:videoId",
+          element: <VideoDetail />,
         },
       ],
     },
