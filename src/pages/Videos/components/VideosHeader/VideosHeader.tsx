@@ -19,7 +19,7 @@ import axiosInstance from "../../../../axiosInstance";
 import Video from "../../../../types/api/video.interface";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { videosAtom } from "../../recoil/atoms";
 
 interface IVideoCreateForm {
@@ -32,7 +32,7 @@ interface IVideoCreateForm {
 
 function VideosHeader() {
   const [opened, { open, close }] = useDisclosure(false);
-  const [videos, setVideos] = useRecoilState(videosAtom);
+  const setVideos = useSetRecoilState(videosAtom);
 
   const createVideoMutation = useMutation<
     Video,
@@ -50,6 +50,13 @@ function VideosHeader() {
       thumbnailUrl: "",
       description: "",
       isPublished: true,
+    },
+    validate: {
+      // only allow url of youtube embedded as it's needed in the video detail
+      url: (value) =>
+        /https:\/\/www.youtube.com\/embed\/[^/]+$/.test(value)
+          ? null
+          : "The url of the video should be of Youtube embeded",
     },
   });
 
@@ -120,7 +127,7 @@ function VideosHeader() {
           />
 
           <Button mt={"md"} fullWidth color={"teal"} type={"submit"}>
-            Create User
+            Create Video
           </Button>
         </form>
       </Modal>
